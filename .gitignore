@@ -1,1 +1,4 @@
 *.DO
+
+# Tous les fichiers dans images/
+backend/images/*
