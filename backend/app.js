@@ -3,7 +3,8 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 
 const bookRoutes = require('./routes/book.routes');
-const authRoutes = require('./routes/auth.routes')
+const authRoutes = require('./routes/auth.routes');
+const path = require('path');
 
 mongoose.connect('mongodb+srv://julowebdev:QWDszaJfUnhNZ4RD@cluster0.smxhaj1.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', // Adresse de la MongoDB à changer
   { useNewUrlParser: true,
@@ -27,5 +28,6 @@ app.use(express.json());
 
 app.use('/api/books', bookRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 module.exports = app;
