@@ -2,8 +2,8 @@ const Book = require('../models/book');
 const fs = require('fs');
 
 exports.createBook = (req, res, next) => {
-  console.log('req.body reçu :', req.body); // 🔍
-  console.log('req.headers :', req.headers['content-type']); // 🔍
+  console.log('req.body reçu :', req.body);
+  console.log('req.headers :', req.headers['content-type']);
   const bookObject = JSON.parse(req.body.book);
   delete bookObject._id;
   delete bookObject._userId;

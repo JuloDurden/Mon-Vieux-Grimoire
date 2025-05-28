@@ -1,12 +1,13 @@
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
+require('dotenv').config();
 
 const bookRoutes = require('./routes/book.routes');
 const authRoutes = require('./routes/auth.routes');
 const path = require('path');
 
-mongoose.connect('mongodb+srv://julowebdev:QWDszaJfUnhNZ4RD@cluster0.smxhaj1.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', // Adresse de la MongoDB à changer
+mongoose.connect(process.env.MONGODB_URI,
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
