@@ -16,7 +16,7 @@ const userSchema = mongoose.Schema({
     }
 })
 
-// Check if the user's email doesn't exists in the DB
+// Vérification si l'email n'existe pas dans la DB
 userSchema.plugin(uniqueValidator);
 
 module.exports = mongoose.model('User', userSchema);

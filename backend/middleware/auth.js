@@ -1,13 +1,13 @@
 const jwt = require('jsonwebtoken');
 
-// Checks the user is logged in and its session is valid
+// Vérifie que l'utilisateur est connecté et que sa session est valide
 module.exports = (req, res, next) => {
     try {
-        // The authentication token is retrieved from the request header
+        // Le token d'authentification est extrait de l'en-tête de requête
         const token = req.headers.authorization.split(' ')[1];
-        // The token is verified and decoded using the secret key
+        // Le token est vérifié et décodé à l'aide de la clé secrète.
         const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-        // extracts the user ID and add it to the "auth" object attached to the request
+        // Identifiant de l'utilisateur extrait et ajouté à l'objet "auth" attaché à la requête
         const userId = decodedToken.userId;
         req.auth = {
             userId: userId

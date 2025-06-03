@@ -1,12 +1,11 @@
 require('dotenv').config();
 const express = require('express');
-// const cors = require('cors');
 const mongoose = require('mongoose');
 const bookRoutes = require('./routes/book.routes');
 const authRoutes = require('./routes/auth.routes');
 const path = require('path');
 
-// Connecting to the MongoDB database
+// Connexion à la DB MongoDB
 mongoose.connect(process.env.MONGODB_URI,
   { useNewUrlParser: true,
     useUnifiedTopology: true })
@@ -18,8 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(express.json());
 
-// Configuring CORS headers
-// app.use(cors());
+// Configuration manuelle des headers CORS
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
@@ -27,11 +25,11 @@ app.use((req, res, next) => {
   next();
 });
 
-// Routes for books and users
+// Routes pour les livres et les utilisateurs
 app.use('/api/books', bookRoutes);
 app.use('/api/auth', authRoutes);
 
-// Image server configuration
+// Configuration du serveur d'images
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
 module.exports = app;
