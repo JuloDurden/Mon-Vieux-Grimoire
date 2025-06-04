@@ -19,6 +19,7 @@ function SignIn({ setUser }) {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [notification, setNotification] = useState({ error: false, message: '' });
+
   const signIn = async () => {
     try {
       setIsLoading(true);
@@ -70,25 +71,30 @@ function SignIn({ setUser }) {
       setIsLoading(false);
     }
   };
+
   const errorClass = notification.error ? styles.Error : null;
+
   return (
     <div className={`${styles.SignIn} container`}>
       <Logo />
       <div className={`${styles.Notification} ${errorClass}`}>
         {notification.message.length > 0 && <p>{notification.message}</p>}
       </div>
-      <div className={styles.Form}>
-        <label htmlFor={email}>
+
+      <form className={styles.Form} onSubmit={(e) => e.preventDefault()}>
+        <label htmlFor="email">
           <p>Adresse email</p>
           <input
             className=""
-            type="text"
+            type="email"
             name="email"
             id="email"
             value={email}
+            autoComplete="username" // ✅ AJOUTÉ
             onChange={(e) => { setEmail(e.target.value); }}
           />
         </label>
+
         <label htmlFor="password">
           <p>Mot de passe</p>
           <input
@@ -97,43 +103,33 @@ function SignIn({ setUser }) {
             name="password"
             id="password"
             value={password}
+            autoComplete="current-password" // ✅ AJOUTÉ
             onChange={(e) => { setPassword(e.target.value); }}
           />
         </label>
+
         <div className={styles.Submit}>
           <button
-            type="submit"
-            className="
-            flex justify-center
-            p-2 rounded-md w-1/2 self-center
-            bg-gray-800  text-white hover:bg-gray-800"
+            type="button"
+            className="flex justify-center p-2 rounded-md w-1/2 self-center bg-gray-800 text-white hover:bg-gray-800"
             onClick={signIn}
           >
             {isLoading ? <div className="" /> : null}
-            <span>
-              Se connecter
-            </span>
+            <span>Se connecter</span>
           </button>
+
           <span>OU</span>
+
           <button
-            type="submit"
-            className="
-            flex justify-center
-            p-2 rounded-md w-1/2 self-center
-            bg-gray-800  text-white hover:bg-gray-800"
+            type="button"
+            className="flex justify-center p-2 rounded-md w-1/2 self-center bg-gray-800 text-white hover:bg-gray-800"
             onClick={signUp}
           >
-            {
-                isLoading
-                  ? <div className="mr-2 w-5 h-5 border-l-2 rounded-full animate-spin" /> : null
-              }
-            <span>
-              {'S\'inscrire'}
-            </span>
+            {isLoading ? <div className="mr-2 w-5 h-5 border-l-2 rounded-full animate-spin" /> : null}
+            <span>S&apos;inscrire</span>
           </button>
         </div>
-
-      </div>
+      </form>
     </div>
   );
 }
@@ -141,4 +137,5 @@ function SignIn({ setUser }) {
 SignIn.propTypes = {
   setUser: PropTypes.func.isRequired,
 };
+
 export default SignIn;
