@@ -67,7 +67,7 @@ exports.modifyBook = (req, res, next) => {
     .then((book) => {
       // Vérification des droits : seul le propriétaire peut modifier
       if (book.userId != req.auth.userId) {
-        res.status(401).json({ message: 'Not authorized' });
+        res.status(403).json({ message: '403: unauthorized request' });
       } else {
         
         // 🗑️ SUPPRESSION DE L'ANCIENNE IMAGE SI NOUVELLE IMAGE UPLOADÉE
@@ -114,7 +114,7 @@ exports.deleteBook = (req, res, next) => {
     .then(book => {
       // Vérification des droits : seul le propriétaire peut supprimer
       if (book.userId != req.auth.userId) {
-        res.status(401).json({message: 'Non autorisé'});
+        res.status(403).json({message: '403: unauthorized request'});
       } else {
         // Extraction du nom du fichier image pour suppression
         const filename = book.imageUrl.split('/images/')[1];
