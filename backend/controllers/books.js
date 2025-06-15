@@ -70,19 +70,42 @@ exports.modifyBook = (req, res, next) => {
         res.status(403).json({ message: '403: unauthorized request' });
       } else {
         
-        // 🗑️ SUPPRESSION DE L'ANCIENNE IMAGE SI NOUVELLE IMAGE UPLOADÉE
-        if (req.file && book.imageUrl) {
-          const oldImageName = book.imageUrl.split('/images/')[1];
-          const oldImagePath = `images/${oldImageName}`;
-          
-          fs.unlink(oldImagePath, (error) => {
-            if (error) {
-              console.log('⚠️ Erreur suppression ancienne image :', error.message);
+        // 🗑️ SUPPRESSION DE L'ANCIENNE IMAGE - VERSION ULTRA-SÉCURISÉE
+      if (req.file && book.imageUrl) {
+        try {
+          // ✅ Vérification complète
+          if (typeof book.imageUrl === 'string' && book.imageUrl.includes('/images/')) {
+            const parts = book.imageUrl.split('/images/');
+            const oldImageName = parts[1];
+            
+            if (oldImageName && oldImageName.trim()) {
+              const oldImagePath = `images/${oldImageName}`;
+              
+              // ✅ Vérification que le fichier existe avant suppression
+              fs.access(oldImagePath, fs.constants.F_OK, (err) => {
+                if (!err) {
+                  fs.unlink(oldImagePath, (error) => {
+                    if (error) {
+                      console.log('⚠️ Erreur suppression ancienne image :', error.message);
+                    } else {
+                      console.log(`🗑️ Ancienne image supprimée : ${oldImageName}`);
+                    }
+                  });
+                } else {
+                  console.log('ℹ️ Ancienne image déjà supprimée ou introuvable');
+                }
+              });
             } else {
-              console.log(`🗑️ Ancienne image supprimée : ${oldImageName}`);
+              console.log('⚠️ Nom d\'image invalide dans l\'URL :', book.imageUrl);
             }
-          });
+          } else {
+            console.log('ℹ️ URL d\'image non locale ou invalide :', book.imageUrl);
+          }
+        } catch (error) {
+          console.log('⚠️ Erreur lors du traitement de l\'ancienne image :', error.message);
         }
+      }
+
 
         // Préparation des données à mettre à jour
         // IMPORTANT : conserve les ratings existants si pas fournis dans la modification

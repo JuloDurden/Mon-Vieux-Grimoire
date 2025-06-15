@@ -157,8 +157,9 @@ export async function updateBook(data, id) {
     year: data.year,
     genre: data.genre,
   };
-  console.log(data.file[0]);
-  if (data.file[0]) {
+
+  // ✅ Vérification complète avant d'accéder à data.file[0]
+  if (data.file && data.file.length > 0 && data.file[0]) {
     newData = new FormData();
     newData.append('book', JSON.stringify(book));
     newData.append('image', data.file[0]);
